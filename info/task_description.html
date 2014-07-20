@@ -1,44 +1,62 @@
 <p>
-    <i>( Describe task in general )</i>
+    We hope you know about the ancient game <a href="http://en.wikipedia.org/wiki/Chess">Chess</a>.
+    The ancient humans loved this game and our Robots trying to examine all tricks about chess too.
+    Today they are solving the 8-queen problem from the old chess manuscript.
 </p>
 
 <p>
-    Sum two passed ints
+    Chess is a two-player strategy board game played on a chessboard,
+    a checkered gameboard with 64 squares arranged in an eight-by-eight grid.
+    Chess is played on a square board of eight rows (called ranks and denoted with numbers 1 to 8)
+    and eight columns (called files and denoted with letters a to h) of squares.
+    Each square of the chessboard is identified by a unique coordinate pair — a letter and a number (ex, "a1", "h8", "d6").
+    For this mission we need to know only about queens.
+    The queen can move any number of squares along rank, file, or diagonal.
+</p>
+<p>
+    You should place eight chess queens on an 8×8 chessboard so that no two queens threaten each other.
+    But we already placed one or several queens, so you need to finish the placement.
+</p>
+
+<p>
+    You are given a set of square coordinates where queens are placed already.
+    You should finish this set and return the full set of the square coordinates for Eight Queens.
+    If it's not possible -- return an empty set.<br>
+    Be careful - an initial position can contain threaten figures already.
 </p>
 
 <p style="text-align: center;">
-    <img class="for_info_only" title="example" src="{{MEDIA}}example.png" alt="example" width="392px"/>
-    <img class="for_editor_only" title="example" src="{{MEDIA}}example.png" alt="example" width="380px"/>
-</p>
-
-<p><i>( Explain input and output values )</i></p>
-<p>
-    <strong>Input: </strong> Two arguments. Both are int
+    <img class="for_info_only" title="place-queens" src="{{MEDIA}}place-queens.png" alt="place-queens" width="600px"/>
+    <img class="for_editor_only" title="place-queens" src="{{MEDIA}}place-queens.png" alt="place-queens" width="380px"/>
 </p>
 
 <p>
-    <strong>Output: </strong> Int. 
+    <strong>Input: </strong> Placed queens coordinates as a set of strings.
+</p>
+
+<p>
+    <strong>Output: </strong> Eight queens coordinates as a set of strings or an empty set.
 </p>
 
 
 
 <div class="for_info_only">
-    <p><i>( Put some usage examples )</i></p>
     <p>
         <strong>Example:</strong>
     </p>
     <pre class="brush: python">
-checkio(3, 2) == 5
-checkio(5, 7) == 12
-    </pre>
+place_queens({"b1", "c4", "d6", "e8"})  # {"b1", "c4", "d6", "e8", "a5", "g3", "f1", "h7"},
+place_queens({"b1", "c4", "d6", "e8", "a7", "g5"}) == {}
+</pre>
 </div>
 
 <p class="for_info_only">
     <strong>How it is used: </strong>
-    <i>(Here you can explain how it can be used in development and what is usage of this.)</i>
+    This is a classical puzzle and combinatorial constrains problem.
+    It can be useful if you need make a schedule for teachers or sport games in several stadiums.
 </p>
 
 <p>
-    <strong>Precondition:</strong>
-    <i>Constraints for Input</i>
+    <strong>Precondition:</strong><br>
+    0 &lt; placed &lt; 8<br>
 </p>
