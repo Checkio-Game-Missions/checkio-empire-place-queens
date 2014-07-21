@@ -99,6 +99,10 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210'],
 
             var canvas = new ChessCanvas($content.find(".explanation")[0]);
             canvas.prepare(checkioInput);
+            if (resultCode > 1) {
+                canvas.supposed(userResult);
+                canvas.drawThreats(threats);
+            }
 
 
             this_e.setAnimationHeight($content.height() + 60);
@@ -141,16 +145,20 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210'],
             var padding = 10;
             var cell = 40;
 
-            var figures;
+            var figures = [];
+
 
             var size = padding * 2 + cell * 9;
             var paper = Raphael(dom, size, size);
 
-            var attrBoard = {"stroke": colorBlue4, "stroke-width": 3};
+            var figSet = paper.set();
+
+            var attrBoard = {"stroke": colorBlue4, "stroke-width": 4};
             var attrBlack = {"fill": colorBlue2, "stroke-width": 0};
             var attrWhite = {"fill": colorGrey1, "stroke-width": 0};
             var attrQueen = {"stroke": colorBlue4, "font-family": "Roboto", "font-size": cell * 0.8};
             var attrText = {"stroke": colorBlue4, "font-family": "Roboto", "font-size": cell * 0.8, "font-weight": "bold"};
+            var attrThreat = {"stroke": colorOrange4, "stroke-width": 4, "stroke-linecap": "round"};
 
             var rows = "12345678";
             var cols = "abcdefgh";
@@ -159,7 +167,7 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210'],
             this.place_queen = function(coor, full) {
                 var r = rows.indexOf(coor[1]);
                 var c = cols.indexOf(coor[0]);
-                paper.text(padding + cell * 1.5 + c * cell, size - padding - cell * 1.5 - cell * r,
+                return paper.text(padding + cell * 1.5 + c * cell, size - padding - cell * 1.5 - cell * r,
                     full ? "♛" : "♕").attr(attrQueen);
             };
 
@@ -175,8 +183,32 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210'],
                 }
                 paper.rect(padding + cell, padding, cell * 8, cell * 8).attr(attrBoard);
                 for (i = 0; i < placed.length; i++) {
-                    this.place_queen(placed[i], true);
+                    figures.push(placed[i]);
+                    figSet.push(this.place_queen(placed[i], true));
                 }
+            };
+
+            this.supposed = function(userFigures) {
+                for (var i = 0; i < userFigures.length; i++) {
+                    if (figures.indexOf(userFigures[i]) === -1) {
+                        figSet.push(this.place_queen(userFigures[i], false));
+                    }
+                }
+            };
+
+            this.drawThreats = function(lines) {
+                for (var i = 0; i < lines.length; i++) {
+                    var r1 = rows.indexOf(lines[i][0][1]);
+                    var c1 = cols.indexOf(lines[i][0][0]);
+                    var r2 = rows.indexOf(lines[i][1][1]);
+                    var c2 = cols.indexOf(lines[i][1][0]);
+                    paper.path([
+                        ["M", padding + cell * 1.5 + c1 * cell, size - padding - cell * 1.5 - cell * r1],
+                        ["L", padding + cell * 1.5 + c2 * cell, size - padding - cell * 1.5 - cell * r2]]
+                    ).attr(attrThreat);
+
+                }
+                figSet.toFront();
             }
 
         }
