@@ -40,12 +40,16 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210'],
             }
 
             //YOUR FUNCTION NAME
-            var fname = 'checkio';
+            var fname = 'place_queens';
 
-            var checkioInput = data.in;
-            var checkioInputStr = fname + '(' + JSON.stringify(checkioInput)  + ')';
+            if (data.ext && data.ext.show) {
+                var checkioInputStr = fname + "(" + data.ext.show + ")";
+            }
+            else {
+                checkioInputStr = fname + '({"b1", "c4", "d6", "e8"})';
+            }
 
-            var failError = function(dError) {
+            var failError = function (dError) {
                 $content.find('.call').html('Fail: ' + checkioInputStr);
                 $content.find('.output').html(dError.replace(/\n/g, ","));
 
@@ -66,20 +70,24 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210'],
                 return false;
             }
 
+            var checkioInput = data.in;
             var rightResult = data.ext["answer"];
-            var userResult = data.out;
+            var userResult = data.out[0];
+            var userResultShow = data.out[1];
             var result = data.ext["result"];
-            var result_addon = data.ext["result_addon"];
-
+            var resultAddon = data.ext["result_addon"];
+            var resultCode = resultAddon[0];
+            var resultText = resultAddon[1];
+            var threats = resultAddon[2];
 
             //if you need additional info from tests (if exists)
             var explanation = data.ext["explanation"];
 
-            $content.find('.output').html('&nbsp;Your result:&nbsp;' + JSON.stringify(userResult));
+            $content.find('.output').html('&nbsp;Your result:&nbsp;' + userResultShow);
 
             if (!result) {
                 $content.find('.call').html('Fail: ' + checkioInputStr);
-                $content.find('.answer').html('Right result:&nbsp;' + JSON.stringify(rightResult));
+                $content.find('.answer').html(resultText);
                 $content.find('.answer').addClass('error');
                 $content.find('.output').addClass('error');
                 $content.find('.call').addClass('error');
@@ -89,13 +97,8 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210'],
                 $content.find('.answer').remove();
             }
 
-            //Your code here about test explanation animation
-            //$content.find(".explanation").html("Something text for example");
-            //
-            //
-            //
-            //
-            //
+            var canvas = new ChessCanvas($content.find(".explanation")[0]);
+            canvas.prepare(checkioInput);
 
 
             this_e.setAnimationHeight($content.height() + 60);
@@ -116,27 +119,67 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210'],
 //            });
 //        });
 
-        var colorOrange4 = "#F0801A";
-        var colorOrange3 = "#FA8F00";
-        var colorOrange2 = "#FAA600";
-        var colorOrange1 = "#FABA00";
+        function ChessCanvas(dom) {
 
-        var colorBlue4 = "#294270";
-        var colorBlue3 = "#006CA9";
-        var colorBlue2 = "#65A1CF";
-        var colorBlue1 = "#8FC7ED";
+            var colorOrange4 = "#F0801A";
+            var colorOrange3 = "#FA8F00";
+            var colorOrange2 = "#FAA600";
+            var colorOrange1 = "#FABA00";
 
-        var colorGrey4 = "#737370";
-        var colorGrey3 = "#9D9E9E";
-        var colorGrey2 = "#C5C6C6";
-        var colorGrey1 = "#EBEDED";
+            var colorBlue4 = "#294270";
+            var colorBlue3 = "#006CA9";
+            var colorBlue2 = "#65A1CF";
+            var colorBlue1 = "#8FC7ED";
 
-        var colorWhite = "#FFFFFF";
-        //Your Additional functions or objects inside scope
-        //
-        //
-        //
+            var colorGrey4 = "#737370";
+            var colorGrey3 = "#9D9E9E";
+            var colorGrey2 = "#C5C6C6";
+            var colorGrey1 = "#EBEDED";
 
+            var colorWhite = "#FFFFFF";
+
+            var padding = 10;
+            var cell = 40;
+
+            var figures;
+
+            var size = padding * 2 + cell * 9;
+            var paper = Raphael(dom, size, size);
+
+            var attrBoard = {"stroke": colorBlue4, "stroke-width": 3};
+            var attrBlack = {"fill": colorBlue2, "stroke-width": 0};
+            var attrWhite = {"fill": colorGrey1, "stroke-width": 0};
+            var attrQueen = {"stroke": colorBlue4, "font-family": "Roboto", "font-size": cell * 0.8};
+            var attrText = {"stroke": colorBlue4, "font-family": "Roboto", "font-size": cell * 0.8, "font-weight": "bold"};
+
+            var rows = "12345678";
+            var cols = "abcdefgh";
+
+
+            this.place_queen = function(coor, full) {
+                var r = rows.indexOf(coor[1]);
+                var c = cols.indexOf(coor[0]);
+                paper.text(padding + cell * 1.5 + c * cell, size - padding - cell * 1.5 - cell * r,
+                    full ? "♛" : "♕").attr(attrQueen);
+            };
+
+
+            this.prepare = function(placed) {
+                for (var i = 0; i < 8; i++) {
+                    paper.text(padding + cell / 2, size - padding - cell * i - cell * 1.5, rows[i]).attr(attrText);
+                    paper.text(padding + cell * 1.5 + cell * i, size - padding - cell / 2, cols[i]).attr(attrText);
+                    for (var j = 0; j < 8; j++) {
+                        paper.rect(padding + cell + cell * i, padding + cell * j, cell, cell).attr(
+                            (i + j) % 2 === 1 ? attrBlack : attrWhite);
+                    }
+                }
+                paper.rect(padding + cell, padding, cell * 8, cell * 8).attr(attrBoard);
+                for (i = 0; i < placed.length; i++) {
+                    this.place_queen(placed[i], true);
+                }
+            }
+
+        }
 
     }
 );

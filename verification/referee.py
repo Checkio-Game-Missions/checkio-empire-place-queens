@@ -148,6 +148,7 @@ def check_coordinate(coor):
 
 
 def checker(data, user_data):
+
     placed, is_possible = set(data[0]), data[1]
     user_set = set(user_data[0])
     if not all(isinstance(c, str) and len(c) == 2 and check_coordinate(c) for c in user_set):
@@ -165,6 +166,7 @@ def checker(data, user_data):
         return False, (4, "You forgot about placed queens.", threats)
     if is_possible and threats:
         return False, (5, "I see some problems in this placement.", threats)
+    print("===>", locals())
     return True, (100, "Great!", threats)
 
 
@@ -172,7 +174,7 @@ cover = """def cover(func, data):
     res = func(set(data))
     if not isinstance(res, set):
         raise TypeError("Must be set.")
-    return res, str(res)
+    return list(res), str(res)
 """
 
 api.add_listener(

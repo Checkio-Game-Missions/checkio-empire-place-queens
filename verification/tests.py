@@ -10,14 +10,14 @@ Each test is dict with
 TESTS = {
     "Basics": [
         {
-            "input": ["b1", "c4", "d6", "e8"],
-            "answer": [["b1", "c4", "d6", "e8"], True],
-            "show": '{"b1", "c4", "d6", "e8"}'
+            "input": ["b2", "c4", "d6", "e8"],
+            "answer": [["b2", "c4", "d6", "e8"], True],
+            "show": '{"b2", "c4", "d6", "e8"}'
         },
         {
-            "input": ["b1", "c4", "d6", "e8", "a7", "g5"],
-            "answer": [["b1", "c4", "d6", "e8", "a7", "g5"], False],
-            "show": '{"b1", "c4", "d6", "e8", "a7", "g5"}'
+            "input": ["b2", "c4", "d6", "e8", "a7", "g5"],
+            "answer": [["b2", "c4", "d6", "e8", "a7", "g5"], False],
+            "show": '{"b2", "c4", "d6", "e8", "a7", "g5"}'
         },
     ],
     "Extra": [
