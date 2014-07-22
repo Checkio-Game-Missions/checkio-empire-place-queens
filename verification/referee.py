@@ -166,7 +166,6 @@ def checker(data, user_data):
         return False, (4, "You forgot about placed queens.", threats)
     if is_possible and threats:
         return False, (5, "I see some problems in this placement.", threats)
-    print("===>", locals())
     return True, (100, "Great!", threats)
 
 
