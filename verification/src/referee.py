@@ -150,11 +150,6 @@ py_cover = """def cover(func, data):
     return list(res)
 """
 
-
-
-
-
-
 def checker(data, user_data):
 
     placed, is_possible = set(data[0]), data[1]
@@ -194,7 +189,7 @@ class QueensValidator(validators.BaseValidator):
         placed = self._test.get("input", [])
         is_possible = self._test.get("possible", True)
 
-        user_set = set(outer_result[0])
+        user_set = set(outer_result)
         if not all(isinstance(c, str) and len(c) == 2 and
                    self.check_coordinate(c) for c in user_set):
             return Result(False, self.ERR_WRONG_COORDINATES)
@@ -220,7 +215,7 @@ class Referee(RefereeBase):
     VALIDATOR = QueensValidator
     DEFAULT_FUNCTION_NAME = "place_queens"
     CALLED_REPRESENTATIONS = {
-        "python_3": representations.py_tuple_representation,
+        "python_3": py_repr,
     }
     ENV_COVERCODE = {
         "python_3": py_cover,
