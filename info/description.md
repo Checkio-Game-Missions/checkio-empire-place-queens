@@ -16,5 +16,3 @@ You are given a set of square coordinates where we have placed Queens already.
 You should finish this set and return the full set of the coordinates for all eight Queens.
 If it's not possible -- return an empty set.
 Be careful - an initial position could possibly threaten another Queen right off the bat.
-
-![place-queens](place-queens.svg)
