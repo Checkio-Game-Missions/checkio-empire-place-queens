@@ -1,0 +1,65 @@
+"use strict";
+
+function placeQueens(placed) {
+    return [];
+}
+
+var assert = require("assert");
+
+if (!global.is_checking) {
+    // These "asserts" using only for self-checking and not necessary for auto-testing
+
+    var COLS = "abcdefgh";
+    var ROWS = "12345678";
+
+    var checkCoordinate = function (coor) {
+        var c = coor[0];
+        var r = coor[1];
+        return COLS.indexOf(c) !== -1 && ROWS.indexOf(r);
+    };
+
+    var checker = function (func, placed, isPossible) {
+        var result = func(placed.slice());
+
+        for (var i = 0; i < result.length; i++) {
+            var coor = result[i];
+            if (typeof(coor) !== "string" || coor.length !== 2 || !checkCoordinate(coor)) {
+                console.log("Wrong Coordinates");
+                return false;
+            }
+        }
+
+        if (!isPossible) {
+            if (placed.length > 0) {
+                console.log("Hm, how did you place them?");
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+        for (i = 0; i < result.length; i++) {
+            var fCol = COLS.indexOf(result[i][0]);
+            var fRow = ROWS.indexOf(result[i][1]);
+            for (var j = i + 1; j < result.length; j++) {
+                var sCol = COLS.indexOf(result[j][0]);
+                var sRow = ROWS.indexOf(result[j][1]);
+
+                if (fCol === sCol || fRow === sRow
+                    || (fRow - fCol === sRow - sCol) || ((fRow + fCol === sRow + sCol))) {
+                    console.log("I see some problems in this placement.");
+                    return false;
+                }
+            }
+            if (placed.indexOf(result) === -1) {
+                console.log("You forgot about placed queens.");
+                return false;
+            }
+        }
+        return true;
+    };
+
+    assert(checker(placeQueens, ["b2", "c4", "d6", "e8"], true), "1st Example");
+    assert(checker(placeQueens, ["b2", "c4", "d6", "e8", "a7", "g5"], false), "2nd Example");
+}
