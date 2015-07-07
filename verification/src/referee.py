@@ -1,5 +1,5 @@
 from checkio_referee import RefereeBase
-from checkio_referee import covercodes, validators, representations
+from checkio_referee import covercodes, validators, representations, ENV_NAME
 
 
 import settings_env
@@ -150,26 +150,26 @@ py_cover = """def cover(func, data):
     return list(res)
 """
 
-def checker(data, user_data):
-
-    placed, is_possible = set(data[0]), data[1]
-    user_set = set(user_data[0])
-    if not all(isinstance(c, str) and len(c) == 2 and check_coordinate(c) for c in user_set):
-        return False, (1, "Wrong Coordinates", [])
-    threats = []
-    for f, s in combinations(user_set.union(placed), 2):
-        if s in THREATS[f]:
-            threats.append([f, s])
-    if not is_possible:
-        if user_set:
-            return False, (3, "Hm, how did you place them?", threats)
-        else:
-            return True, (10, "Great!", threats)
-    if not all(p in user_set for p in placed):
-        return False, (4, "You forgot about placed queens.", threats)
-    if is_possible and threats:
-        return False, (5, "I see some problems in this placement.", threats)
-    return True, (100, "Great!", threats)
+# def checker(data, user_data):
+#
+#     placed, is_possible = set(data[0]), data[1]
+#     user_set = set(user_data[0])
+#     if not all(isinstance(c, str) and len(c) == 2 and check_coordinate(c) for c in user_set):
+#         return False, (1, "Wrong Coordinates", [])
+#     threats = []
+#     for f, s in combinations(user_set.union(placed), 2):
+#         if s in THREATS[f]:
+#             threats.append([f, s])
+#     if not is_possible:
+#         if user_set:
+#             return False, (3, "Hm, how did you place them?", threats)
+#         else:
+#             return True, (10, "Great!", threats)
+#     if not all(p in user_set for p in placed):
+#         return False, (4, "You forgot about placed queens.", threats)
+#     if is_possible and threats:
+#         return False, (5, "I see some problems in this placement.", threats)
+#     return True, (100, "Great!", threats)
 
 class QueensValidator(validators.BaseValidator):
 
@@ -214,9 +214,13 @@ class Referee(RefereeBase):
 
     VALIDATOR = QueensValidator
     DEFAULT_FUNCTION_NAME = "place_queens"
+    FUNCTION_NAMES = {
+        ENV_NAME.JS_NODE: "placeQueens"
+    }
+
     CALLED_REPRESENTATIONS = {
-        "python_3": py_repr,
+        ENV_NAME.PYTHON: py_repr,
     }
     ENV_COVERCODE = {
-        "python_3": py_cover,
+        ENV_NAME.PYTHON: py_cover,
     }
