@@ -16,6 +16,7 @@ if (!global.is_checking) {
         var c = coor[0];
         var r = coor[1];
         return COLS.indexOf(c) !== -1 && ROWS.indexOf(r);
+
     };
 
     var checker = function (func, placed, isPossible) {
@@ -62,4 +63,5 @@ if (!global.is_checking) {
 
     assert(checker(placeQueens, ["b2", "c4", "d6", "e8"], true), "1st Example");
     assert(checker(placeQueens, ["b2", "c4", "d6", "e8", "a7", "g5"], false), "2nd Example");
+    console.log("Use 'Check' to earn sweet rewards!");
 }
