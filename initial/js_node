@@ -15,7 +15,7 @@ if (!global.is_checking) {
     var checkCoordinate = function (coor) {
         var c = coor[0];
         var r = coor[1];
-        return COLS.indexOf(c) !== -1 && ROWS.indexOf(r);
+        return COLS.indexOf(c) !== -1 && ROWS.indexOf(r) !== -1;
 
     };
 
